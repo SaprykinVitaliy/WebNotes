@@ -1,33 +1,48 @@
 package ru.saprykin.vitaliy.webnotes;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import ru.saprykin.vitaliy.webnotes.Model.DBConnector;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class MainController {
 
+    private Connection dbConnection;
+
     private static List<Person> persons = new ArrayList<Person>();
 
     static {
+
         persons.add(new Person("Bill", "Gates"));
         persons.add(new Person("Steve", "Jobs"));
     }
 
-    // ​​​​​​​
-    // Вводится (inject) из application.properties.
     @Value("${welcome.message}")
     private String message;
 
     @Value("${error.message}")
     private String errorMessage;
 
-    @RequestMapping(value = { "/", "/index" }, method = RequestMethod.GET)
+    @Autowired
+    public MainController(DBConnector connector) {
+        try {
+            dbConnection = connector.getAppDBConnection();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
     public String index(Model model) {
 
         model.addAttribute("message", message);
@@ -35,15 +50,15 @@ public class MainController {
         return "index";
     }
 
-    @RequestMapping(value = { "/personList" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/notesList"}, method = RequestMethod.GET)
     public String personList(Model model) {
 
         model.addAttribute("persons", persons);
 
-        return "personList";
+        return "notesList";
     }
 
-    @RequestMapping(value = { "/addPerson" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/addPerson"}, method = RequestMethod.GET)
     public String showAddPersonPage(Model model) {
 
         PersonForm personForm = new PersonForm();
@@ -52,7 +67,7 @@ public class MainController {
         return "addPerson";
     }
 
-    @RequestMapping(value = { "/addPerson" }, method = RequestMethod.POST)
+    @RequestMapping(value = {"/addPerson"}, method = RequestMethod.POST)
     public String savePerson(Model model, //
                              @ModelAttribute("personForm") PersonForm personForm) {
 
