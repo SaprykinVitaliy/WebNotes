@@ -9,13 +9,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 @Component
-public class PostgresDBConnector implements DBConnector{
+public class PostgresDBConnector /*implements DBConnector*/{
     final private static String DBMSDriver = "org.postgresql.Driver";
 
     @Value("${dbConnection.URL}")
     private String connectionString;
 
-    private static Connection appDBConnection;
+    private Connection appDBConnection;
 
     @PostConstruct
     public void init() {
@@ -31,8 +31,11 @@ public class PostgresDBConnector implements DBConnector{
         }
     }
 
-    public Connection getAppDBConnection() throws SQLException {
-        return appDBConnection;
+    public Connection getAppDBConnection() {
+        if (appDBConnection != null) {
+            return appDBConnection;
+        }
+        return null;
     }
 
     public void close() throws SQLException {

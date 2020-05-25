@@ -7,9 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ru.saprykin.vitaliy.webnotes.Model.DBConnector;
+import ru.saprykin.vitaliy.webnotes.Model.DBAgent;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,29 +16,17 @@ import java.util.List;
 @Controller
 public class MainController {
 
-    private Connection dbConnection;
-
-    private static List<Person> persons = new ArrayList<Person>();
-
-    static {
-
-        persons.add(new Person("Bill", "Gates"));
-        persons.add(new Person("Steve", "Jobs"));
-    }
-
     @Value("${welcome.message}")
     private String message;
 
     @Value("${error.message}")
     private String errorMessage;
 
+    private final DBAgent dbAgent;
+
     @Autowired
-    public MainController(DBConnector connector) {
-        try {
-            dbConnection = connector.getAppDBConnection();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+    public MainController(DBAgent dbAgent) {
+        this.dbAgent = dbAgent;
     }
 
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
@@ -51,9 +38,11 @@ public class MainController {
     }
 
     @RequestMapping(value = {"/notesList"}, method = RequestMethod.GET)
-    public String personList(Model model) {
+    public String personList(Model model) throws SQLException {
 
-        model.addAttribute("persons", persons);
+        List<Note> notes = dbAgent.getNotes();
+
+        model.addAttribute("notes", notes);
 
         return "notesList";
     }
@@ -77,7 +66,7 @@ public class MainController {
         if (firstName != null && firstName.length() > 0 //
                 && lastName != null && lastName.length() > 0) {
             Person newPerson = new Person(firstName, lastName);
-            persons.add(newPerson);
+            //persons.add(newPerson);
 
             return "redirect:/personList";
         }

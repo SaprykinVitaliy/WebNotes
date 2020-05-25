@@ -1,10 +1,7 @@
-h1 {
+h2 {
     color:#0000FF;
 }
 
-h2 {
-    color:#FF0000;
-}
 
 table {
     border-collapse: collapse;
@@ -12,4 +9,13 @@ table {
 
 table th, table td {
     padding: 5px;
+}
+
+
+td {
+    margin-left: 5px;
+    border-radius: 10px;
+}
+tr {
+    margin-top: 5px;
 }
