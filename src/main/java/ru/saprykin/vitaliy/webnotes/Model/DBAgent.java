@@ -32,9 +32,10 @@ public class DBAgent {
             Statement statement2 = dbConnection.createStatement();
             ResultSet notesVersions = statement2.executeQuery("SELECT header FROM note_versions WHERE id = " + id + " AND time_of_version_creation = '" + last_change_time + "';");
             if (notesVersions.next()) {
-                Note note = new Note(notesVersions.getString("header"),
-                        notesMetadata.getTimestamp("creation_time"),
-                        notesMetadata.getTimestamp("last_change_time"));
+                Note note = new Note(id,
+                        notesVersions.getString("header"),
+                        notesMetadata.getString("creation_time"),
+                        notesMetadata.getString("last_change_time"));
 
                 result.add(note);
             }
@@ -46,5 +47,31 @@ public class DBAgent {
         notesMetadata.close();
         statement1.close();
         return result;
+    }
+
+
+    public void newNote(String creation_time, String header, String text) throws SQLException {
+        Statement statement = dbConnection.createStatement();
+
+        statement.execute("INSERT INTO note_metadata (creation_time, last_change_time)\n" +
+                "VALUES ('" + creation_time + "', '" + creation_time + "');");
+
+        ResultSet idSet = statement.executeQuery("SELECT id FROM note_metadata WHERE creation_time = '" + creation_time + "';");
+
+        int id = -1;
+        if (idSet.next()) {
+            id = idSet.getInt("id");
+            idSet.close();
+        }
+
+        if (id == -1) {
+            throw new RuntimeException("Error executing queries");
+        }
+
+        statement.execute("INSERT INTO note_versions (id, time_of_version_creation, header, text)" +
+                "VALUES ('" + id + "', '" + creation_time + "', '" + header + "', '" + text + "')");
+
+        statement.close();
+
     }
 }

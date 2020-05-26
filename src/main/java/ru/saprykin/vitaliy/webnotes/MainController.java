@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import ru.saprykin.vitaliy.webnotes.Model.DBAgent;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Controller
 public class MainController {
-
-    @Value("${welcome.message}")
-    private String message;
 
     @Value("${error.message}")
     private String errorMessage;
@@ -32,8 +32,6 @@ public class MainController {
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
     public String index(Model model) {
 
-        model.addAttribute("message", message);
-
         return "index";
     }
 
@@ -47,32 +45,33 @@ public class MainController {
         return "notesList";
     }
 
-    @RequestMapping(value = {"/addPerson"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/addNote"}, method = RequestMethod.GET)
     public String showAddPersonPage(Model model) {
 
-        PersonForm personForm = new PersonForm();
-        model.addAttribute("personForm", personForm);
+        NoteForm noteForm = new NoteForm();
+        model.addAttribute("noteForm", noteForm);
 
-        return "addPerson";
+        return "addNote";
     }
 
-    @RequestMapping(value = {"/addPerson"}, method = RequestMethod.POST)
-    public String savePerson(Model model, //
-                             @ModelAttribute("personForm") PersonForm personForm) {
+    @RequestMapping(value = {"/addNote"}, method = RequestMethod.POST)
+    public String savePerson(Model model,
+                             @ModelAttribute("noteForm") NoteForm noteForm) throws SQLException {
 
-        String firstName = personForm.getFirstName();
-        String lastName = personForm.getLastName();
+        String title = noteForm.getTitle();
+        String text = noteForm.getText();
 
-        if (firstName != null && firstName.length() > 0 //
-                && lastName != null && lastName.length() > 0) {
-            Person newPerson = new Person(firstName, lastName);
-            //persons.add(newPerson);
+        if (title != null && title.length() > 0 //
+                && text != null && text.length() > 0) {
+            Timestamp ts = Timestamp.from(Instant.now());
+            String timestamp = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(ts);
+            dbAgent.newNote(timestamp, title, text);
 
-            return "redirect:/personList";
+            return "redirect:/notesList";
         }
 
         model.addAttribute("errorMessage", errorMessage);
-        return "addPerson";
+        return "addNote";
     }
 
 }
