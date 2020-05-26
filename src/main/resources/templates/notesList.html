@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>Notes</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
@@ -16,10 +16,22 @@
             <th>Creation time</th>
             <th>Modification time</th>
         </tr>
-        <tr th:each ="note : ${notes}">
+        <tr th:each="note : ${notes}">
             <td th:utext="${note.header}">...</td>
             <td th:utext="${note.creation_time}">...</td>
             <td th:utext="${note.last_change_time}">...</td>
+            <td>
+                <form>
+                    <button>edit</button>
+                    <input type="hidden" name="id" th:value="${note.id}">
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/deleteNote}" th:method="delete">
+                    <button>delete</button>
+                    <input type="hidden" name="id" th:value="${note.id}">
+                </form>
+            </td>
         </tr>
     </table>
 </div>

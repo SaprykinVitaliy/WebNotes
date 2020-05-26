@@ -12,13 +12,25 @@
       th:object="${noteForm}" method="POST">
     <p>
         <span>Title:</span>
-        <input type="text" th:field="*{title}"/>
+        <label>
+            <input type="text" th:field="*{title}"/>
+        </label>
     </p>
     <p>
         <span style="vertical-align: top">Text:</span>
-        <textarea rows="20" cols="80" th:field="*{text}"></textarea>
+        <label>
+            <textarea rows="20" cols="80" th:field="*{text}"></textarea>
+        </label>
     </p>
-    <input type="submit" value="Create"/>
+    <div style="display: flex; flex-direction: row; padding-left: 40px">
+        <form>
+            <input type="submit" value="Create"/>
+        </form>
+
+        <form style="margin-left: 14px" th:action="@{/notesList}" th:method="GET" >
+            <button>Cancel</button>
+        </form>
+    </div>
 </form>
 
 <br/>

@@ -1,3 +1,4 @@
+
 h2 {
     color:#0000FF;
 }
@@ -11,10 +12,12 @@ table th, table td {
 }
 
 td {
-    margin-left: 5px;
+    margin-left: 10px;
     border-radius: 10px;
 }
 
 tr {
     margin-top: 5px;
 }
+
+

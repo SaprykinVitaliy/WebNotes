@@ -2,14 +2,13 @@ package ru.saprykin.vitaliy.webnotes.Model;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.saprykin.vitaliy.webnotes.Note;
+import ru.saprykin.vitaliy.webnotes.Controller.Note;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 @Service
 public class DBAgent {
-    //private PostgresDBConnector connector;
 
     private final Connection dbConnection;
 
@@ -73,5 +72,13 @@ public class DBAgent {
 
         statement.close();
 
+    }
+
+    public void deleteNote(int id) throws SQLException {
+        Statement statement = dbConnection.createStatement();
+        statement.addBatch("DELETE FROM note_versions WHERE id =" + id + ";");
+        statement.addBatch("DELETE FROM note_metadata WHERE id =" + id + ";");
+        statement.executeBatch();
+        statement.close();
     }
 }

@@ -1,4 +1,4 @@
-package ru.saprykin.vitaliy.webnotes;
+package ru.saprykin.vitaliy.webnotes.View;
 
 public class NoteForm {
 

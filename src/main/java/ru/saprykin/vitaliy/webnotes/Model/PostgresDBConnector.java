@@ -9,7 +9,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 @Component
-public class PostgresDBConnector /*implements DBConnector*/{
+public class PostgresDBConnector implements DBConnector{
     final private static String DBMSDriver = "org.postgresql.Driver";
 
     @Value("${dbConnection.URL}")
