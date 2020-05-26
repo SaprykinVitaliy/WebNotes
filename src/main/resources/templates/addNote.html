@@ -13,14 +13,13 @@
     <p>
         <span>Title:</span>
         <label>
-            <input type="text" th:field="*{title}"/>
+            <input type="text" th:value="${old_title}" id="title" name="title">
         </label>
     </p>
     <p>
         <span style="vertical-align: top">Text:</span>
-        <label>
-            <textarea rows="20" cols="80" th:field="*{text}"></textarea>
-        </label>
+            <!--<textarea rows="20" cols="80" th:field="*{text}" th:text="${old_title}"></textarea>-->
+        <textarea th:text="${old_title}" id="text" name="text" rows="20" cols="80"></textarea>
     </p>
     <div style="display: flex; flex-direction: row; padding-left: 40px">
         <form>

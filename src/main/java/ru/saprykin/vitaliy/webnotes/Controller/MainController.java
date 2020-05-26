@@ -51,6 +51,8 @@ public class MainController {
 
         NoteForm noteForm = new NoteForm();
         model.addAttribute("noteForm", noteForm);
+        model.addAttribute("old_title", "asasaaaaaaaaaaa");
+        model.addAttribute("old_text", "asasaaaaaaaaaaa");
 
         return "addNote";
     }
