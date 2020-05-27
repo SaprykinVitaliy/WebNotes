@@ -3,18 +3,28 @@ package ru.saprykin.vitaliy.webnotes.Controller;
 public class Note {
     private int id;
     private String header;
+    private String text;
     private String creation_time;
-    private String last_change_time;
+    private String change_time;
 
     public Note() {
 
     }
 
-    public Note(int id, String header, String creation_time, String last_change_time) {
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public Note(int id, String header, String text, String creation_time, String change_time) {
         this.id = id;
+        this.text = text;
         this.header = header;
         this.creation_time = creation_time;
-        this.last_change_time = last_change_time;
+        this.change_time = change_time;
     }
 
     public int getId() {
@@ -41,11 +51,11 @@ public class Note {
         this.creation_time = creation_time;
     }
 
-    public String getLast_change_time() {
-        return last_change_time;
+    public String getChange_time() {
+        return change_time;
     }
 
-    public void setLast_change_time(String last_change_time) {
-        this.last_change_time = last_change_time;
+    public void setChange_time(String change_time) {
+        this.change_time = change_time;
     }
 }

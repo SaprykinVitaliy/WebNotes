@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<div th:each="note : ${notes}" style="display: inline-block">
+    <table style="margin-right: 40px">
+        <tr>
+            <td>Title:</td>
+            <td th:text="${note.header}"></td>
+        </tr>
+        <tr>
+            <td>Created:</td>
+            <td th:text="${note.creation_time}"></td>
+        </tr>
+        <tr>
+            <td>Changed:</td>
+            <td th:text="${note.change_time}"></td>
+        </tr>
+        <tr>
+            <td>Text:</td>
+            <td th:text="${note.text}"></td>
+        </tr>
+    </table>
+</div>
+
+
+</body>
+</html>

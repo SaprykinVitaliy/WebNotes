@@ -19,11 +19,25 @@
         <tr th:each="note : ${notes}">
             <td th:utext="${note.header}">...</td>
             <td th:utext="${note.creation_time}">...</td>
-            <td th:utext="${note.last_change_time}">...</td>
+            <td th:utext="${note.change_time}">...</td>
             <td>
-                <form>
-                    <button>edit</button>
+                <form th:action="@{/note}" th:method="get">
+                    <button>view</button>
                     <input type="hidden" name="id" th:value="${note.id}">
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/note}" th:method="get">
+                    <button>history</button>
+                    <input type="hidden" name="id" th:value="${note.id}">
+                    <input type="hidden" name="history" th:value="true">
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/addNote}" th:method="get">
+                    <button>edit</button>
+                    <input type="hidden" name="editNote" th:value="true">
+                    <input type="hidden" name="noteID" th:value="${note.id}">
                 </form>
             </td>
             <td>
@@ -32,6 +46,7 @@
                     <input type="hidden" name="id" th:value="${note.id}">
                 </form>
             </td>
+
         </tr>
     </table>
 </div>

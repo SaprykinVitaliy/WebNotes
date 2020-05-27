@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -47,12 +48,22 @@ public class MainController {
     }
 
     @RequestMapping(value = {"/addNote"}, method = RequestMethod.GET)
-    public String showAddPersonPage(Model model) {
+    public String showAddPersonPage(Model model,
+                                    @RequestParam(value = "editNote", required = false) String editNote,
+                                    @RequestParam(value = "noteID", required = false) String noteID) throws SQLException {
 
         NoteForm noteForm = new NoteForm();
+
+
+        model.addAttribute("noteID", "null");
         model.addAttribute("noteForm", noteForm);
-        model.addAttribute("old_title", "asasaaaaaaaaaaa");
-        model.addAttribute("old_text", "asasaaaaaaaaaaa");
+
+        if (editNote != null && editNote.equals("true")) {
+            Note note = dbAgent.getOneNote(Integer.parseInt(noteID));
+            model.addAttribute("noteID", note.getId());
+            model.addAttribute("old_title", note.getHeader());
+            model.addAttribute("old_text", note.getText());
+        }
 
         return "addNote";
     }
@@ -63,13 +74,19 @@ public class MainController {
 
         String title = noteForm.getTitle();
         String text = noteForm.getText();
+        String noteID = noteForm.getNoteID();
 
         if (title != null && title.length() > 0 //
                 && text != null && text.length() > 0) {
+
             Timestamp ts = Timestamp.from(Instant.now());
             String timestamp = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(ts);
-            dbAgent.newNote(timestamp, title, text);
 
+            if (noteID != null && !noteID.equals("null")) {
+                dbAgent.editNote(noteID, timestamp, title, text);
+            } else {
+                dbAgent.newNote(timestamp, title, text);
+            }
             return "redirect:/notesList";
         }
 
@@ -80,7 +97,7 @@ public class MainController {
     @RequestMapping(value = {"/deleteNote"}, method = RequestMethod.POST)
     public String deleteNote(Model model,
                              @RequestParam(value = "_method", required = false) String _method,
-                             @RequestParam(value = "id", required = false) int id) {
+                             @RequestParam(value = "id", required = true) int id) {
         try {
             if (_method.equals("delete")) {
 
@@ -90,6 +107,31 @@ public class MainController {
             } else {
                 throw new IllegalArgumentException();
             }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return "redirect:/notesList";
+    }
+
+
+    @RequestMapping(value = {"/note"}, method = RequestMethod.GET)
+    public String getNote(Model model,
+                          @RequestParam(value = "id", required = true) int id,
+                          @RequestParam(value = "history", required = false) String history) {
+        try {
+
+            List<Note> notes = new ArrayList<>();
+
+            if (history != null && history.equals("true")) {
+                notes.addAll(dbAgent.getNoteWithHistory(id));
+            } else {
+                notes.add(dbAgent.getOneNote(id));
+            }
+
+            model.addAttribute("notes", notes);
+
+            return "note";
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();

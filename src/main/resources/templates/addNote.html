@@ -10,6 +10,7 @@
 
 <form th:action="@{/addNote}"
       th:object="${noteForm}" method="POST">
+    <input type="hidden" name="noteID" th:value="${noteID}">
     <p>
         <span>Title:</span>
         <label>
@@ -18,14 +19,12 @@
     </p>
     <p>
         <span style="vertical-align: top">Text:</span>
-            <!--<textarea rows="20" cols="80" th:field="*{text}" th:text="${old_title}"></textarea>-->
-        <textarea th:text="${old_title}" id="text" name="text" rows="20" cols="80"></textarea>
+        <textarea th:text="${old_text}" id="text" name="text" rows="20" cols="80"></textarea>
     </p>
     <div style="display: flex; flex-direction: row; padding-left: 40px">
         <form>
             <input type="submit" value="Create"/>
         </form>
-
         <form style="margin-left: 14px" th:action="@{/notesList}" th:method="GET" >
             <button>Cancel</button>
         </form>
