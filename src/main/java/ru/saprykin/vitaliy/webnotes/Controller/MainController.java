@@ -32,8 +32,8 @@ public class MainController {
     }
 
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
-    public String index(Model model) {
-
+    public String index(Model model,
+                        @RequestParam(value = "lang", required = false) String lang) {
         return "index";
     }
 

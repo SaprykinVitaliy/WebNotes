@@ -2,41 +2,38 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>New note</title>
+    <title th:text="#{new.note}"></title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<h2>Create new note:</h2>
+<h2 th:text="#{create.new.note}"></h2>
 
 <form th:action="@{/addNote}"
       th:object="${noteForm}" method="POST">
     <input type="hidden" name="noteID" th:value="${noteID}">
     <p>
-        <span>Title:</span>
+        <span th:text="#{title}"></span>
         <label>
             <input type="text" th:value="${old_title}" id="title" name="title">
         </label>
     </p>
     <p>
-        <span style="vertical-align: top">Text:</span>
+        <span style="vertical-align: top" th:text="#{text}"></span>
         <textarea th:text="${old_text}" id="text" name="text" rows="20" cols="80"></textarea>
     </p>
-    <div style="display: flex; flex-direction: row; padding-left: 40px">
+    <div style="display: flex; flex-direction: row; padding-left: 60px">
         <form>
-            <input type="submit" value="Create"/>
+            <input type="submit" th:value="#{create}"/>
         </form>
-        <form style="margin-left: 14px" th:action="@{/notesList}" th:method="GET" >
-            <button>Cancel</button>
+        <form style="margin-left: 14px" th:action="@{/notesList}" th:method="GET">
+            <button th:text="#{cancel}"></button>
         </form>
     </div>
 </form>
-
 <br/>
-
 <div th:if="${errorMessage}" th:utext="${errorMessage}"
      style="color:#ff0000;font-style:italic;">
     ...
 </div>
-
 </body>
 </html>

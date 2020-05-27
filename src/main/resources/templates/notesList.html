@@ -2,19 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Notes</title>
+    <title th:text="#{notes}"></title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<h2>Your notes:</h2>
-<a href="addNote">Create new note</a>
+<h2 th:text="#{your.notes}"></h2>
+<a href="addNote" th:text="#{create.note}"></a>
 <br/><br/>
 <div>
     <table border="0">
         <tr>
-            <th>Name</th>
-            <th>Creation time</th>
-            <th>Modification time</th>
+            <th th:text="#{title}"></th>
+            <th th:text="#{created}"></th>
+            <th th:text="#{changed}"></th>
         </tr>
         <tr th:each="note : ${notes}">
             <td th:utext="${note.header}">...</td>
@@ -22,31 +22,30 @@
             <td th:utext="${note.change_time}">...</td>
             <td>
                 <form th:action="@{/note}" th:method="get">
-                    <button>view</button>
+                    <button th:text="#{view}"></button>
                     <input type="hidden" name="id" th:value="${note.id}">
                 </form>
             </td>
             <td>
                 <form th:action="@{/note}" th:method="get">
-                    <button>history</button>
+                    <button th:text="#{history}"></button>
                     <input type="hidden" name="id" th:value="${note.id}">
                     <input type="hidden" name="history" th:value="true">
                 </form>
             </td>
             <td>
                 <form th:action="@{/addNote}" th:method="get">
-                    <button>edit</button>
+                    <button th:text="#{edit}"></button>
                     <input type="hidden" name="editNote" th:value="true">
                     <input type="hidden" name="noteID" th:value="${note.id}">
                 </form>
             </td>
             <td>
                 <form th:action="@{/deleteNote}" th:method="delete">
-                    <button>delete</button>
+                    <button th:text="#{delete}"></button>
                     <input type="hidden" name="id" th:value="${note.id}">
                 </form>
             </td>
-
         </tr>
     </table>
 </div>

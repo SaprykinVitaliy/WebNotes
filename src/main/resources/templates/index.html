@@ -1,15 +1,53 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title th:text="#{welcome}"></title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body>
+
 <h2 th:text="#{welcome}"></h2>
 
+<div>
+    <div style="display: inline-block">
+        <form th:action="@{/index}" th:method="get">
+            <button>English</button>
+            <input type="hidden" name="lang" th:value="en">
+        </form>
+    </div>
+    <div style="display: inline-block">
+        <form th:action="@{/index}" th:method="get">
+            <button>Русский</button>
+            <input type="hidden" name="lang" th:value="ru">
+        </form>
+    </div>
+</div>
+
+<form th:action="@{/addNote}"
+      th:object="${noteForm}" method="POST">
+    <input type="hidden" name="noteID" th:value="${noteID}">
+    <p>
+        <span th:text="#{title}"></span>
+        <label>
+            <input type="text" th:value="${old_title}" id="title" name="title">
+        </label>
+    </p>
+    <p>
+        <span style="vertical-align: top" th:text="#{text}"></span>
+        <textarea th:text="${old_text}" id="text" name="text" rows="20" cols="80"></textarea>
+    </p>
+    <div style="display: flex; flex-direction: row; padding-left: 60px">
+        <form>
+            <input type="submit" th:value="#{create}"/>
+        </form>
+        <form style="margin-left: 14px" th:action="@{/notesList}" th:method="GET">
+            <button th:text="#{cancel}"></button>
+        </form>
+    </div>
+</form>
+
+<br/>
 <a th:href="@{/notesList}" th:text="#{view.notes}"></a>
-
 </body>
-
 </html>
