@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
-    <title>Welcome</title>
+    <title th:text="#{welcome}"></title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<h2>Welcome</h2>
+<h2 th:text="#{welcome}"></h2>
 
-<a th:href="@{/notesList}">View my notes</a>
+<a th:href="@{/notesList}" th:text="#{view.notes}"></a>
 
 </body>
 
