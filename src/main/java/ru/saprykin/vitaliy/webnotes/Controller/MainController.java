@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.saprykin.vitaliy.webnotes.DAO.NoteDBAgent;
+import ru.saprykin.vitaliy.webnotes.DAO.NoteDAO;
 import ru.saprykin.vitaliy.webnotes.Model.Note;
 import ru.saprykin.vitaliy.webnotes.View.NoteForm;
 
@@ -25,11 +25,11 @@ public class MainController {
     @Value("${error.message}")
     private String errorMessage;
 
-    private final NoteDBAgent noteDbAgent;
+    private final NoteDAO noteDAO;
 
     @Autowired
-    public MainController(NoteDBAgent noteDbAgent) {
-        this.noteDbAgent = noteDbAgent;
+    public MainController(NoteDAO noteDAO) {
+        this.noteDAO = noteDAO;
     }
 
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
@@ -41,7 +41,7 @@ public class MainController {
     @RequestMapping(value = {"/notesList"}, method = RequestMethod.GET)
     public String personList(Model model) throws SQLException {
 
-        List<Note> notes = noteDbAgent.getNotes();
+        List<Note> notes = noteDAO.getNotes();
 
         model.addAttribute("notes", notes);
 
@@ -60,7 +60,7 @@ public class MainController {
         model.addAttribute("noteForm", noteForm);
 
         if (editNote != null && editNote.equals("true")) {
-            Note note = noteDbAgent.getOneNote(Integer.parseInt(noteID));
+            Note note = noteDAO.getOneNote(Integer.parseInt(noteID));
             model.addAttribute("noteID", note.getId());
             model.addAttribute("old_title", note.getHeader());
             model.addAttribute("old_text", note.getText());
@@ -84,9 +84,9 @@ public class MainController {
             String timestamp = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(ts);
 
             if (noteID != null && !noteID.equals("null")) {
-                noteDbAgent.editNote(noteID, timestamp, title, text);
+                noteDAO.editNote(noteID, timestamp, title, text);
             } else {
-                noteDbAgent.newNote(timestamp, title, text);
+                noteDAO.create(timestamp, title, text);
             }
             return "redirect:/notesList";
         }
@@ -102,7 +102,7 @@ public class MainController {
         try {
             if (_method.equals("delete")) {
 
-                noteDbAgent.deleteNote(id);
+                noteDAO.deleteNote(id);
                 return "redirect:/notesList";
 
             } else {
@@ -125,9 +125,9 @@ public class MainController {
             List<Note> notes = new ArrayList<>();
 
             if (history != null && history.equals("true")) {
-                notes.addAll(noteDbAgent.getNoteWithHistory(id));
+                notes.addAll(noteDAO.getNoteWithHistory(id));
             } else {
-                notes.add(noteDbAgent.getOneNote(id));
+                notes.add(noteDAO.getOneNote(id));
             }
 
             model.addAttribute("notes", notes);
@@ -139,4 +139,6 @@ public class MainController {
         }
         return "redirect:/notesList";
     }
+
+
 }

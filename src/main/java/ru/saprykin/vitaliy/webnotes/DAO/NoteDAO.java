@@ -9,12 +9,12 @@ import java.sql.*;
 import java.util.ArrayList;
 
 @Service
-public class NoteDBAgent {
+public class NoteDAO {
 
     private final Connection dbConnection;
 
     @Autowired
-    public NoteDBAgent(PostgresDBConnector connector) {
+    public NoteDAO(PostgresDBConnector connector) {
         dbConnection = connector.getAppDBConnection();
     }
 
@@ -109,17 +109,17 @@ public class NoteDBAgent {
     }
 
 
-    public void newNote(String creation_time, String header, String text) throws SQLException {
+    public void create(String creation_time, String header, String text) throws SQLException {
         Statement statement = dbConnection.createStatement();
 
         statement.execute("INSERT INTO note_metadata (creation_time, last_change_time)\n" +
                 "VALUES ('" + creation_time + "', '" + creation_time + "');");
 
-        ResultSet idSet = statement.executeQuery("SELECT id FROM note_metadata WHERE creation_time = '" + creation_time + "';");
+        ResultSet idSet = statement.executeQuery("SELECT currval(pg_get_serial_sequence('note_metadata','id'));");
 
         int id = -1;
         if (idSet.next()) {
-            id = idSet.getInt("id");
+            id = idSet.getInt(1);
             idSet.close();
         }
 
@@ -131,7 +131,10 @@ public class NoteDBAgent {
                 "VALUES ('" + id + "', '" + creation_time + "', '" + header + "', '" + text + "')");
 
         statement.close();
+    }
 
+    public void create(Note note) throws SQLException {
+        create(note.getCreation_time(), note.getHeader(), note.getText());
     }
 
     public void deleteNote(int id) throws SQLException {
