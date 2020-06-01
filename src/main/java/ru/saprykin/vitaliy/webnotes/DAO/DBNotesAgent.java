@@ -1,19 +1,19 @@
-package ru.saprykin.vitaliy.webnotes.Model;
+package ru.saprykin.vitaliy.webnotes.DAO;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import ru.saprykin.vitaliy.webnotes.Controller.Note;
+import org.springframework.stereotype.Repository;
+import ru.saprykin.vitaliy.webnotes.Model.Note;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-@Service
-public class DBAgent {
+@Repository
+public class DBNotesAgent {
 
     private final Connection dbConnection;
 
     @Autowired
-    public DBAgent(PostgresDBConnector connector) {
+    public DBNotesAgent(PostgresDBConnector connector) {
         dbConnection = connector.getAppDBConnection();
     }
 

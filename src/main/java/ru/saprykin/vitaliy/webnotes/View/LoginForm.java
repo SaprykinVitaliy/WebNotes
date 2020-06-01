@@ -1,13 +1,9 @@
+/*
 package ru.saprykin.vitaliy.webnotes.View;
 
-public class RegistrationForm {
+public class LoginForm {
     private String login;
     private String password;
-
-    public RegistrationForm(String login, String password) {
-        this.login = login;
-        this.password = password;
-    }
 
     public String getLogin() {
         return login;
@@ -25,3 +21,4 @@ public class RegistrationForm {
         this.password = password;
     }
 }
+*/

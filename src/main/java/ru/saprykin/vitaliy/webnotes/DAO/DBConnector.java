@@ -1,4 +1,4 @@
-package ru.saprykin.vitaliy.webnotes.Model;
+package ru.saprykin.vitaliy.webnotes.DAO;
 
 import java.sql.Connection;
 import java.sql.SQLException;

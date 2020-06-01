@@ -16,6 +16,13 @@ CREATE TABLE note_versions
     PRIMARY KEY (id, version)
 );
 
+CREATE TABLE users
+(
+    id       SERIAL PRIMARY KEY,
+    name     varchar(255) NOT NULL,
+    password varchar(255) NOT NULL
+);
+
 INSERT INTO note_metadata (creation_time, last_change_time)
 VALUES ('1999-01-08 04:05:06', '1999-01-08 04:05:30'),
        ('2020-05-25 11:53:06', '2020-05-25 11:53:06');
@@ -26,4 +33,6 @@ VALUES ('1', '1999-01-08 04:05:06', 'Тестовая заметка', 'Это �
        ('2', '2020-05-25 11:53:06', 'Другая тестовая заметка', 'Это тестовая заметка ещё не изменялась');
 
 
-
+INSERT INTO users (name, password)
+VALUES ('user', 'user'),
+       ('admin', 'admin');

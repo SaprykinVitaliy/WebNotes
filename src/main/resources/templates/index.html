@@ -24,18 +24,34 @@
     </div>
 </div>
 
-<form th:action="@{/addNote}"
-      th:object="${noteForm}" method="POST">
-    <input type="hidden" name="noteID" th:value="${noteID}">
+<div th:if="${param.error}">
+    Invalid username and password.
+</div>
+<div th:if="${param.logout}">
+    You have been logged out.
+</div>
+<!--<div>
+&lt;!&ndash;    <c:url value="/j_spring_security_check" var="loginUrl" />&ndash;&gt;
+    <form th:object="${loginForm}" th:action="@{/}" method="post">
+        <div><label> User Name : <input type="text" name="j_username"/> </label></div>
+        <div><label> Password: <input type="password" name="j_password"/> </label></div>
+        <div><input type="submit" value="Sign In"/></div>
+    </form>
+</div>-->
+
+<!--<form th:object="${loginForm}" method="POST">
+    <input type="hidden" name="noteID">
     <p>
         <span th:text="#{title}"></span>
         <label>
-            <input type="text" th:value="${old_title}" id="title" name="title">
+            <input type="text" id="login" name="title">
         </label>
     </p>
     <p>
         <span style="vertical-align: top" th:text="#{text}"></span>
-        <textarea th:text="${old_text}" id="text" name="text" rows="20" cols="80"></textarea>
+        <label>
+            <input type="text" id="password" name="title">
+        </label>
     </p>
     <div style="display: flex; flex-direction: row; padding-left: 60px">
         <form>
@@ -45,7 +61,7 @@
             <button th:text="#{cancel}"></button>
         </form>
     </div>
-</form>
+</form>-->
 
 <br/>
 <a th:href="@{/notesList}" th:text="#{view.notes}"></a>
