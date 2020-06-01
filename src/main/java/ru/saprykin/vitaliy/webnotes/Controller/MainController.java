@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.saprykin.vitaliy.webnotes.Model.DBAgent;
+import ru.saprykin.vitaliy.webnotes.DAO.NoteDBAgent;
+import ru.saprykin.vitaliy.webnotes.Model.Note;
 import ru.saprykin.vitaliy.webnotes.View.NoteForm;
 
 import java.sql.SQLException;
@@ -24,11 +25,11 @@ public class MainController {
     @Value("${error.message}")
     private String errorMessage;
 
-    private final DBAgent dbAgent;
+    private final NoteDBAgent noteDbAgent;
 
     @Autowired
-    public MainController(DBAgent dbAgent) {
-        this.dbAgent = dbAgent;
+    public MainController(NoteDBAgent noteDbAgent) {
+        this.noteDbAgent = noteDbAgent;
     }
 
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
@@ -40,7 +41,7 @@ public class MainController {
     @RequestMapping(value = {"/notesList"}, method = RequestMethod.GET)
     public String personList(Model model) throws SQLException {
 
-        List<Note> notes = dbAgent.getNotes();
+        List<Note> notes = noteDbAgent.getNotes();
 
         model.addAttribute("notes", notes);
 
@@ -59,7 +60,7 @@ public class MainController {
         model.addAttribute("noteForm", noteForm);
 
         if (editNote != null && editNote.equals("true")) {
-            Note note = dbAgent.getOneNote(Integer.parseInt(noteID));
+            Note note = noteDbAgent.getOneNote(Integer.parseInt(noteID));
             model.addAttribute("noteID", note.getId());
             model.addAttribute("old_title", note.getHeader());
             model.addAttribute("old_text", note.getText());
@@ -83,9 +84,9 @@ public class MainController {
             String timestamp = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(ts);
 
             if (noteID != null && !noteID.equals("null")) {
-                dbAgent.editNote(noteID, timestamp, title, text);
+                noteDbAgent.editNote(noteID, timestamp, title, text);
             } else {
-                dbAgent.newNote(timestamp, title, text);
+                noteDbAgent.newNote(timestamp, title, text);
             }
             return "redirect:/notesList";
         }
@@ -101,7 +102,7 @@ public class MainController {
         try {
             if (_method.equals("delete")) {
 
-                dbAgent.deleteNote(id);
+                noteDbAgent.deleteNote(id);
                 return "redirect:/notesList";
 
             } else {
@@ -124,9 +125,9 @@ public class MainController {
             List<Note> notes = new ArrayList<>();
 
             if (history != null && history.equals("true")) {
-                notes.addAll(dbAgent.getNoteWithHistory(id));
+                notes.addAll(noteDbAgent.getNoteWithHistory(id));
             } else {
-                notes.add(dbAgent.getOneNote(id));
+                notes.add(noteDbAgent.getOneNote(id));
             }
 
             model.addAttribute("notes", notes);

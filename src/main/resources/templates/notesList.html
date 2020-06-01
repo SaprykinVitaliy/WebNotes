@@ -46,6 +46,12 @@
                     <input type="hidden" name="id" th:value="${note.id}">
                 </form>
             </td>
+            <td>
+                <form th:action="@{/exportNote}" th:method="get">
+                    <button th:text="#{export}"></button>
+                    <input type="hidden" name="id" th:value="${note.id}">
+                </form>
+            </td>
         </tr>
     </table>
 </div>

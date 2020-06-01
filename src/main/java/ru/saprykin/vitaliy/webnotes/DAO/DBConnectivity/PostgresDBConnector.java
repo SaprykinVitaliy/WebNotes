@@ -1,4 +1,4 @@
-package ru.saprykin.vitaliy.webnotes.Model;
+package ru.saprykin.vitaliy.webnotes.DAO.DBConnectivity;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

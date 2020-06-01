@@ -1,4 +1,4 @@
-package ru.saprykin.vitaliy.webnotes.Controller;
+package ru.saprykin.vitaliy.webnotes.Model;
 
 public class Note {
     private int id;
