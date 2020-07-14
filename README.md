@@ -8,7 +8,7 @@ Features:
 
 Implementaion details:
 - Written in <b>Java</b>
-- Built using Maven
-- Web-interface: Thymeleaf
-- DBMS: PostgreSQL
-- Jackson for operating JSONs
+- Built using <b>Maven</b>
+- Web-interface: <b>Thymeleaf</b>
+- DBMS: <b>PostgreSQL</b>
+- <b>Jackson</b> for operating JSONs
