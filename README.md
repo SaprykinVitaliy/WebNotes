@@ -1,5 +1,6 @@
 # WebNotes
-Pet project - web site for creating and managing notes
+Pet project - web site for creating and managing notes.
+
 Features:
 1. Create, edit, delete text notes 
 2. Site is available in English and Russian
